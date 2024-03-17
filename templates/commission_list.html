@@ -1,0 +1,11 @@
+{% extends "commission_base.html" %} {% block content %}
+<ul>
+  {% for commission in commissions %}
+  <li>
+    <a href="{{commission.get_absolute_url}}">{{commission}}</a>
+  </li>
+  <p>Submitted: {{ commission.created_on }}</p>
+  <br />
+  {% endfor %}
+</ul>
+{% endblock%}
