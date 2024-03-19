@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Blog</title>
+    </head>
+    <style>
+        h2 {
+            font-family:Georgia;
+            color:cadetblue;
+        }
+        div {
+            font-family:Verdana;
+            color:darkcyan;
+        }
+        li {
+            color:midnightblue;
+        }
+        img {
+            width:550px;
+        }
+    </style>
+    <body>
+        {% for article in object_list %}
+        <h2>{{ article.category.name }}</h2>
+        <div>
+            "{{ article.category.description }}"
+        </div>
+        <ul>
+            <li>
+                <a href="{{ article.get_absolute_url }}">
+                    {{ article.title }}
+                </a>
+            </li>
+        </ul>
+        {% endfor %}
+        <img src="https://i.pinimg.com/originals/8a/0a/ce/8a0acebac8362ea85dd881859cf078a9.jpg" 
+        alt="Frieren makes me so Ill">
+    </body>
+</html>
