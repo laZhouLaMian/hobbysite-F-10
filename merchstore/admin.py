@@ -13,3 +13,7 @@ class ProductTypeAdmin(admin.ModelAdmin):
 
 class ProductAdmin(admin.ModelAdmin):
     model = Product
+
+
+admin.site.register(ProductType, ProductTypeAdmin)
+admin.site.register(Product, ProductAdmin)
