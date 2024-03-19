@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Merchstore | Product List</title>
+    </head>
+    <body>
+        {% for productCategory in object_list %}
+        <h1>{{ productCategory }}</h1>
+        <ul>
+            {% for product in productCategory.product_set.all() %}
+            <li>
+                <a href="{{ product.get_absolute_url }}">
+                    {{ product }}
+                </a>
+            </li>
+        </ul>
+
+        {% endfor %}
+    </body>
+</html>
