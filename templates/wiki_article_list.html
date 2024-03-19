@@ -11,13 +11,13 @@
     </head>
     <body>
         {% for list in object_list %}  
-            <h2>{{ list.name }}</h2>
+            <h2>{{ list }}</h2>
             <div class="paragraphs">{{ list.description }}</div>
             <br>
             {% for article in list.articles.all %}
                 <li>
                     <a href = "{{ article.get_absolute_url }}">
-                        {{ article.title }}
+                        {{ article }}
                     </a>
                 </li>
             {% endfor %}
