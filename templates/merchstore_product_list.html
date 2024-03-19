@@ -4,17 +4,20 @@
         <title>Merchstore | Product List</title>
     </head>
     <body>
+        <h1>Merchstore</h1>
+        <hr>
         {% for productCategory in object_list %}
         <h1>{{ productCategory }}</h1>
         <ul>
-            {% for product in productCategory.product_set.all() %}
+            {% for product in productCategory.products.all %}
             <li>
                 <a href="{{ product.get_absolute_url }}">
                     {{ product }}
                 </a>
             </li>
+            {% endfor %}
         </ul>
-
+        <hr>
         {% endfor %}
     </body>
 </html>
