@@ -3,17 +3,11 @@
     <head>
         <title>Wiki</title>
         <h1>Wiki</h1>
-        <style>
-            .paragraphs {
-                width: 600px;
-            }
-        </style>
     </head>
     <body>
         {% for list in object_list %}  
             <h2>{{ list }}</h2>
-            <div class="paragraphs">{{ list.description }}</div>
-            <br>
+            <p>{{ list.description }}<p>
             {% for article in list.articles.all %}
                 <li>
                     <a href = "{{ article.get_absolute_url }}">
@@ -22,6 +16,5 @@
                 </li>
             {% endfor %}
         {% endfor %}
-        <br>
     </body>
 </html>
