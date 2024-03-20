@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import ProductType, Product
+
+from .models import Product, ProductType
 
 
 class ProductInline(admin.TabularInline):
@@ -8,7 +9,9 @@ class ProductInline(admin.TabularInline):
 
 class ProductTypeAdmin(admin.ModelAdmin):
     model = ProductType
-    inlines = [ProductInline,]
+    inlines = [
+        ProductInline,
+    ]
 
 
 class ProductAdmin(admin.ModelAdmin):
