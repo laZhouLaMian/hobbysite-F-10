@@ -20,17 +20,19 @@
         }
     </style>
     <body>
-        {% for article in object_list %}
-        <h2>{{ article.category.name }}</h2>
+        {% for category in object_list %}
+        <h2>{{ category.name }}</h2>
         <div>
-            "{{ article.category.description }}"
+            "{{ category.description }}"
         </div>
         <ul>
+            {% for article in category.articles.all %}
             <li>
                 <a href="{{ article.get_absolute_url }}">
                     {{ article.title }}
                 </a>
             </li>
+            {% endfor %}
         </ul>
         {% endfor %}
         <img src="https://i.pinimg.com/originals/8a/0a/ce/8a0acebac8362ea85dd881859cf078a9.jpg" 

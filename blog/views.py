@@ -1,11 +1,11 @@
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 
-from .models import Article
+from .models import Article, ArticleCategory
 
 
 class CategoryListView(ListView):
-    model = Article
+    model = ArticleCategory
     template_name = 'category.html'
     
 class ArticleDetailView(DetailView):
