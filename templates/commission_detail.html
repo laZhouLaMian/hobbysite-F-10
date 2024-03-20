@@ -1,0 +1,14 @@
+{% extends "commission_base.html" %} {% block content %}
+<h2>{{ commission.title }}</h2>
+<p>{{ commission.description }}</p>
+<p>People required: {{ commission.people_required }}</p>
+<br />
+<p>Submitted on {{ commission.created_on }}</p>
+<p>Updated on {{ commission.updated_on }}</p>
+<br />
+<h2>Comments</h2>
+{% for comment in commission.comments.all %}
+<p>{{comment.entry}}</p>
+<p>Created: {{ comment.created_on }} Edited: {{ comment.updated_on }}</p>
+<br />
+{% endfor %} {% endblock%}
