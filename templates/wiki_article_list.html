@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Wiki</title>
+        <h1>Wiki</h1>
+    </head>
+    <body>
+        {% for list in object_list %}  
+            <h2>{{ list }}</h2>
+            <p>{{ list.description }}<p>
+            {% for article in list.articles.all %}
+                <li>
+                    <a href = "{{ article.get_absolute_url }}">
+                        {{ article }}
+                    </a>
+                </li>
+            {% endfor %}
+        {% endfor %}
+    </body>
+</html>
