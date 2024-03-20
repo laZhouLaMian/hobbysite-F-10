@@ -8,10 +8,11 @@ from django.urls import reverse
 
 class ArticleCategory(models.Model):
     name = models.CharField(max_length=255)
-    description = models.CharField(max_length=255)
 
     def __str__(self):
         return self.name
+
+    description = models.TextField()
 
     class Meta:
         ordering = ["name"]
@@ -33,6 +34,7 @@ class Article(models.Model):
     entry = models.TextField()
 
     created_on = models.DateTimeField(auto_now_add=True, null=True)
+
     updated_on = models.DateTimeField(auto_now=True, null=True)
 
     def get_absolute_url(self):
