@@ -22,4 +22,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('commissions/', include('commissions.urls')),
     path('blog/', include("blog.urls", namespace="blog")),
+    path('merchstore/', include('merchstore.urls', namespace='merchstore')),
 ]

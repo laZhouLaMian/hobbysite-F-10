@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Merchstore | Product List</title>
+        <style>
+            header, body {
+                padding: 12px;
+            }
+            * {
+                font-family: sans-serif;
+            }
+            div {
+                display: flex;
+            }
+            .category {
+                flex-direction: column;
+                padding: 20px;
+                border-radius: 20px;
+                border: 2px solid #aaaaaa;
+                margin: 20px;
+            }
+            ul {
+                padding: 0;
+                list-style-type: none;
+            }
+            li {
+                display: flex;
+                flex-direction: row;
+                width: 200px;
+            }
+            li > p {
+                margin-left: auto;
+                margin-top: 0;
+            }
+            hr {
+                width: 100%;    
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            <h1>Merchstore</h1>
+            <hr>
+        </header>
+        <div id="categorylist">
+            {% for productCategory in object_list %}
+            <div class="category">
+                <h1>{{ productCategory }}</h1>
+                <hr />
+                <ul>
+                    {% for product in productCategory.products.all %}
+                    <li>
+                        <a href="{{ product.get_absolute_url }}">
+                            {{ product }}
+                        </a>
+                        <p> ${{ product.price }}</p>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endfor %}
+        </div>
+    </body>
+</html>
