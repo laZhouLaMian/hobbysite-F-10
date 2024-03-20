@@ -6,8 +6,9 @@ from .models import Article, ArticleCategory
 
 class CategoryListView(ListView):
     model = ArticleCategory
-    template_name = 'category.html'
-    
+    template_name = "category.html"
+
+
 class ArticleDetailView(DetailView):
     model = Article
-    template_name = 'article.html'
+    template_name = "article.html"

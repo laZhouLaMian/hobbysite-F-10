@@ -8,30 +8,32 @@ class ArticleCategory(models.Model):
 
     def __str__(self):
         return self.name
-    
+
     class Meta:
-        ordering = ['name']
+        ordering = ["name"]
+
 
 class Article(models.Model):
     title = models.CharField(max_length=255)
     entry = models.TextField()
     createdOn = models.DateTimeField(auto_now_add=True, null=True)
     updatedOn = models.DateTimeField(auto_now=True, null=True)
-    
+
     category = models.ForeignKey(
-        'ArticleCategory',
-        on_delete=models.CASCADE,
-        related_name='articles'
+        "ArticleCategory", on_delete=models.SET_NULL, related_name="articles", null=True
     )
 
     def __str__(self):
-        return '{} (last updated: {})'.format(self.title, self.updatedOn)
-    
+        return "{} (last updated: {})".format(self.title, self.updatedOn)
+
     def get_absolute_url(self):
-        return reverse('blog:Article', args=[self.pk])
-    
+        return reverse("blog:Article", args=[self.pk])
+
     class Meta:
-        ordering = ['-createdOn']
-        unique_together = [['title','createdOn'],['title','entry'],]
-        verbose_name = 'Article'
-        verbose_name_plural = 'Articles'
+        ordering = ["-createdOn"]
+        unique_together = [
+            ["title", "createdOn"],
+            ["title", "entry"],
+        ]
+        verbose_name = "Article"
+        verbose_name_plural = "Articles"
