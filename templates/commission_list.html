@@ -2,10 +2,12 @@
 <ul>
   {% for commission in commissions %}
   <li>
-    <a href="{{commission.get_absolute_url}}">{{commission}}</a>
+    <p>
+      <a href="{{commission.get_absolute_url}}">{{commission}}</a> - Submitted:
+      {{ commission.created_on }}
+    </p>
   </li>
-  <p>Submitted: {{ commission.created_on }}</p>
-  <br />
+
   {% endfor %}
 </ul>
 {% endblock%}
