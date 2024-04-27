@@ -24,4 +24,5 @@ urlpatterns = [
     path("blog/", include("blog.urls", namespace="blog")),
     path("merchstore/", include("merchstore.urls", namespace="merchstore")),
     path("wiki/", include("wiki.urls", namespace="wiki")),
+    path("profile/", namespace="profile"),
 ]
