@@ -21,6 +21,7 @@ class Product(models.Model):
         "ProductType", on_delete=models.SET_NULL, related_name="products", null=True
     )
     description = models.TextField()
+    stock = models.IntegerField()
     price = models.DecimalField(max_digits=5, decimal_places=2)
 
     def __str__(self):
