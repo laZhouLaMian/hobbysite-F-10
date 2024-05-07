@@ -18,7 +18,7 @@
             </nav>
             {% if request.user.is_authenticated %}
                 <div>
-                    <p>Hello {{ request.user.username }}</p>
+                    <p>Hello <a href="{% url "user_management:profile_update" request.user.profile.pk %}">{{ request.user.profile.display_name }}</a></p>
                     <form action="{% url 'logout'%}" method="POST">
                         {% csrf_token %}
                         <button type="submit">LOG OUT</button>
