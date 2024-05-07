@@ -26,5 +26,5 @@ urlpatterns = [
     path("merchstore/", include("merchstore.urls", namespace="merchstore")),
     path("wiki/", include("wiki.urls", namespace="wiki")),
     path("profile/", include("user_management.urls", namespace="profile")),
-    path("registration", include("django.contrib.auth.urls")),
+    path("registration/", include("django.contrib.auth.urls")),
 ]
