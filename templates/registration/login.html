@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	</head>
+	<body>
+		<h1> login </h1>
+		<a href="{% url 'password_reset' %}">reset password</a>
+		<form method="POST">
+		    {% csrf_token %}
+		    {{ form.as_p }}
+		    <button type="submit">LOG IN</button>
+		</form>
+	</body>
+</html>

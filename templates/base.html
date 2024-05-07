@@ -1,0 +1,34 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{% block page_title %}{% endblock %}</title>
+        <link rel="stylesheet" href="{% static "css/base.css" %}">
+        {% block styles %}{% endblock %}
+    </head>
+    <body>
+        <header>
+            <h2>Hobby Site | Section F | Group 10</h2>
+            <nav>
+                <a href="{% url "homepage:homepage" %}">Home</a>
+                <a href="{% url "blog:ArticleCategory" %}">Blog</a>
+                <a href="{% url "commissions:list" %}">Commisions</a>
+                <a href="{% url "merchstore:merchstore_product_list" %}">Merchstore</a>
+                <a href="{% url "wiki:list" %}">Wiki</a>
+            </nav>
+            {% if request.user.is_authenticated %}
+                <div>
+                    <p>Hello {{ request.user.username }}</p>
+                    <form action="{% url 'logout'%}" method="POST">
+                        {% csrf_token %}
+                        <button type="submit">LOG OUT</button>
+                    </form>
+                </div>
+            {% else %}
+                <a href="{% url 'login' %}">LOGIN</a>
+            {% endif %}
+        </header>
+        {% block main %}{% endblock %}
+        {% block scripts %}{% endblock %}
+    </body>
+</html>
