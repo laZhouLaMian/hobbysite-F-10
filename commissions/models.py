@@ -8,6 +8,9 @@ OPEN = "0"
 FULL = "1"
 COMPLETED = "2"
 DISCONTINUED = "3"
+PENDING = "0"
+ACCEPTED = "1"
+REJECTED = "2"
 
 
 class Commission(models.Model):
@@ -55,3 +58,24 @@ class Job(models.Model):
 
     class Meta:
         ordering = ["-created_on"]
+
+
+class JobApplication(models.Model):
+    STATUS_CHOICES = {
+        PENDING: "Pending",
+        ACCEPTED: "Accepted",
+        REJECTED: "Rejected",
+    }
+    job = models.ForeignKey(
+        to=Job, on_delete=models.CASCADE, related_name="job_application"
+    )
+    applicant = models.ForeignKey(
+        to=Profile, on_delete=models.CASCADE, related_name="job_application"
+    )
+    status = models.CharField(
+        max_length=255, default=STATUS_CHOICES[PENDING], choices=STATUS_CHOICES
+    )
+    applied_on = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["status", "-applied_on"]
