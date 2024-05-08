@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% load static %}
+    
+{% block page_title %}Article Edit{% endblock page_title %}
+
+{% block main %}
+    <h1>Edit Article</h1>
+    <form method="POST" enctype="multipart/form-data">{% csrf_token %}
+        {{ form.as_div }}
+        <input type="submit" value="Update">
+    </form>
+{% endblock main %}

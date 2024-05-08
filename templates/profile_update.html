@@ -12,5 +12,5 @@ Hobby Site | Update Profile
   {% csrf_token %} {{ form.as_p }}
   <input type="submit" value="Update" />
 </form>
-<a href="{% url "homepage:homepage" %}">Go to homepage</a>
+<a href="{% url 'homepage:homepage' %}">Go to homepage</a>
 {% endblock main %}

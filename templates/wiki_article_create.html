@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load static %}
+    
+{% block page_title %}Article Creation{% endblock page_title %}
+
+{% block main %}
+    <h1>Create Article</h1>
+    <div id="content">
+        <h3>Add a new article:</h3>
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_div }}
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+{% endblock main %}
