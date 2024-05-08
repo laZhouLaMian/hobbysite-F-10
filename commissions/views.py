@@ -103,4 +103,4 @@ def commission_edit(request, pk):
         "job_forms": job_forms,
     }
 
-    return render(request, "commission/commission_edit.html", ctx)
+    return render(request, "commission_edit.html", ctx)
