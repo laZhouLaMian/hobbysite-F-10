@@ -1,10 +1,23 @@
-from commissions.models import Commission
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from django.db.models import Count, Sum
+from django.forms import modelformset_factory
+
+from commissions.models import Commission, Job, JobApplication
+
+from .forms import CommissionForm, JobApplicationForm, JobForm
 
 
 def commission_list(request):
-    commissions = Commission.objects.all()
-    ctx = {"commissions": commissions}
+    ctx = {
+        "commission_list": Commission.objects.all(),
+        "created_commission_list": Commission.objects.filter(
+            author__username=request.user.profile.username
+        ),
+        "applied_commission_list": Commission.objects.filter(
+            job__job_application__applicant__username=request.user.profile.username
+        ),
+    }
 
     return render(request, "commission_list.html", ctx)
 
