@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+{% block page_title %}Blog{% endblock %}
+{% block styles %}
+    <style>
+        body {
+            margin:auto;
+            width:50%;
+            padding:10px;
+        }
+        h2, h1 {
+            font-family:Georgia;
+        }
+        small {
+            font-family:Verdana;
+            color:darkcyan;
+        }
+        .article {
+            padding:10px 10px 10px 10px;
+            width:650px;
+            border-style:solid;
+        }
+        .login {
+            padding:20px 20px 20px 20px;
+            width:500px;
+            border-style:dotted;
+            border-color:blueviolet;
+        }
+        div {
+            font-family:Verdana;
+            color:midnightblue;
+            padding:10px;
+            width:650px;
+        }
+        img {
+            height:250px;
+        }
+        form {
+            background-color:beige;
+        }
+    </style>
+{% endblock %}
+
+{% block main %}
+    <!-- Account verification -->
+    {% if request.user.is_authenticated %}
+        <form action="{% url 'logout' %}" method="POST">
+            {% csrf_token %}
+            <button type="submit">LOG OUT</button>
+        </form>
+        <br><br>
+    {% else %}
+        <div class="login">
+            <h2>Have an account?</h2>
+            <a href="{% url 'login' %}">LOGIN</a>
+        </div>
+    {% endif %}
+    <br><br>
+
+    <!-- Image header and gallery photos -->
+    {% if object.imgHeader %}
+        <img src="{{ object.imgHeader.url }}">
+    {% endif %}
+    <br><br>
+
+    {% for photo in object.image.all %}
+        <img src="{{ photo.image.url }}">
+    {% endfor %}
+
+
+    <i><h1>{{ object.title }}</h1></i>
+    {% if request.user ==  object.author.user %}
+        <a href="{% url 'blog:Gallery' pk=object.pk %}" method="POST">Add an Image to Gallery</a>
+        <br>
+        <a href="{% url 'blog:ArticleUpdate' pk=object.pk %}">Edit this Article</a>
+    {% endif %}
+    <br>
+
+    <small>
+        created on: {{ object.createdOn }}<br>
+        last updated on: {{ object.updatedOn }}<br>
+        created by: {{ object.author.display_name }}
+    </small>
+    <br><br>
+    <div class="article">
+        {{ object.entry|linebreaks }}
+    <br>
+
+    <!-- Suggested Articles -->
+        <h3>More from the author:</h3>
+        {% for article in allArticles %}
+            {% if article.author == object.author %}
+                <ul>
+                    <li>
+                        <a href="{{ article.get_absolute_url }}">
+                            {{ article.title }}
+                        </a>
+                    </li>
+                </ul>
+            {% endif %}
+        {% endfor %}
+    </div>  
+
+    <!-- Comments of the Article -->
+    <h2>COMMENTS:</h2>
+    {% if request.user.is_authenticated %}
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_div }}
+            <button>Submit</button>
+        </form>
+    {% endif %}
+    <br><br>
+    
+    <div class="article">
+        {% for comment in comments %}
+            {% if comment.article == object %}
+                {{ comment.author.display_name }} | {{ comment.createdOn }}
+                <small>{{ comment.updatedOn }}</small>
+                <p>{{ comment.entry }}</p>
+            {% endif %}
+        {% endfor %}
+    </div>
+    <br><br>
+    <hr>
+    <a href="{% url 'blog:ArticleCategory' %}">Back to Article List</a>
+
+{% endblock %}
+{% block scripts %}{% endblock %}
