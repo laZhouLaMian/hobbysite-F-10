@@ -1,0 +1,38 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{% block page_title %}{% endblock %}</title>
+        <link rel="stylesheet" href="{% static 'css/base.css' %}">
+        {% block styles %}{% endblock %}
+    </head>
+    <body>
+        <header>
+            <h1>Hobby Site</h1>
+            <nav>
+                <a href="{% url 'homepage:homepage' %}">Home</a><p> | </p>
+                <a href="{% url 'blog:ArticleCategory' %}">Blog</a><p> | </p>
+                <a href="{% url 'commissions:list' %}">Commisions</a><p> | </p>
+                <a href="{% url 'merchstore:merchstore_product_list' %}">Merchstore</a><p> | </p>
+                <a href="{% url 'wiki:list' %}">Wiki</a>
+            </nav>
+            {% if request.user.is_authenticated %}
+                <div>
+                    <p>Hello, <a href="{% url 'user_management:profile_update' request.user.profile.pk %}">{{ request.user.profile.display_name }}</a></p>
+                    <form action="{% url 'logout'%}" method="POST">
+                        {% csrf_token %}
+                        <button type="submit">LOG OUT</button>
+                    </form>
+                </div>
+            {% else %}
+                <a href="{% url 'login' %}">LOGIN</a>
+            {% endif %}
+        </header>
+        <hr />
+        {% block main %}{% endblock %}
+        {% block scripts %}{% endblock %}
+    </body>
+    <footer style="margin-top: 10px;">
+        <b><small>(Section F, Group 10)</small></b>
+    </footer>
+</html>

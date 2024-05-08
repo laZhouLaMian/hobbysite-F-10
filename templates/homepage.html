@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block page_title %}
+    Hobby Site | Section F | Group 10
+{% endblock %}
+
+{% block main %}
+  <h2>Hobby Site</h2>
+  <ul>
+    <li><a href="{% url 'blog:ArticleCategory' %}">Blog</a></li>
+    <li><a href="{% url 'commissions:list' %}">Commisions</a></li>
+    <li><a href="{% url 'merchstore:merchstore_product_list' %}">Merchstore</a></li>
+    <li><a href="{% url 'wiki:list' %}">Wiki</a></li>
+  </ul>
+{% endblock %}
