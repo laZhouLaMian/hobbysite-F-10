@@ -22,8 +22,36 @@ def commission_list(request):
     return render(request, "commission_list.html", ctx)
 
 
+@login_required
 def commission_detail(request, pk):
-    commission = Commission.objects.get(pk=pk)
-    ctx = {"commission": commission}
+    commission_detail = Commission.objects.get(pk=pk)
+    commission_jobs = commission_detail.job
+    total_manpower_required = (
+        commission_jobs.aggregate(Sum("manpower_required"))["manpower_required__sum"] or 0
+    )
+    open_manpower = (
+        total_manpower_required
+        - commission_jobs.filter(job_application__status="1").aggregate(
+            Count("job_application")
+        )["job_application__count"]
+    )
 
+    form = JobApplicationForm()
+    if request.method == "POST":
+        form = JobApplicationForm(request.POST)
+        if form.is_valid():
+            application = form.save(commit=False)
+            application.job = Job.objects.get(role=request.POST.get("job"))
+            application.applicant = request.user.profile
+            application.status = JobApplication.PENDING
+            form.save()
+            return redirect("commissions:commission_detail", pk=pk)
+
+    ctx = {
+        "commission_detail": commission_detail,
+        "commission_jobs": commission_jobs.all(),
+        "total_manpower_required": total_manpower_required,
+        "open_manpower": open_manpower,
+        "form": form,
+    }
     return render(request, "commission_detail.html", ctx)

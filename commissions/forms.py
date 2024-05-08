@@ -20,4 +20,4 @@ class JobApplicationForm(forms.ModelForm):
     class Meta:
         model = JobApplication
         fields = []
-       
+   
