@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Article, ArticleCategory
+from .models import Article, ArticleCategory, Comment, Gallery
 
 
 class ArticleInline(admin.TabularInline):
@@ -22,8 +22,15 @@ class CategoryAdmin(admin.ModelAdmin):
     ]
 
 
+class GalleryInline(admin.TabularInline):
+    model = Gallery
+
+class CommentInline(admin.TabularInline):
+    model = Comment
+
 class ArticleAdmin(admin.ModelAdmin):
     model = Article
+    inline = [CommentInline, GalleryInline]
 
     search_fields = [
         "title",
@@ -33,6 +40,15 @@ class ArticleAdmin(admin.ModelAdmin):
 
     fieldsets = [("Details", {"fields": [("category", "title"), "entry"]})]
 
+class GalleryAdmin(admin.ModelAdmin):
+    model = Gallery
+
+class CommentAdmin(admin.ModelAdmin):
+    model = Comment
+
+    list_display = ["article", "author"]
 
 admin.site.register(ArticleCategory, CategoryAdmin)
 admin.site.register(Article, ArticleAdmin)
+admin.site.register(Gallery, GalleryAdmin)
+admin.site.register(Comment, CommentAdmin)

@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% block page_title %}Blog{% endblock %}
+{% block styles %}
+    <style>
+        h2 {
+            font-family:Georgia;
+            color:cadetblue;
+        }
+        .login {
+            border-style:dotted;
+            border-color:blueviolet;
+        }
+        div {
+            font-family:Verdana;
+            color:darkcyan;
+        }
+        li {
+            color:midnightblue;
+        }
+    </style>
+{% endblock %}
+{% block main %}
+        {% if request.user.is_authenticated %}
+            <form action="{% url 'logout' %}" method="POST">
+                {% csrf_token %}
+                <button type="submit">Log out</button>
+            </form>
+            <br><br>
+            
+            <div class="login">
+                <h1>Works by {{ request.user }}</h1>
+                <ul>
+                    {% for article in authoredArticles %}
+                    <li>
+                        <a href="{{ article.get_absolute_url }}">
+                            {{ article.title }}
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <br><br>
+            <a href="{% url 'blog:ArticleCreate' %}">Create an Article</a>
+
+        {% else %}
+            <h2>Have an account?</h2>
+            <a href="{% url 'login' %}">Login</a>
+        {% endif %}
+        <br><br>
+
+        {% for category in object_list %}
+        <h2>{{ category.name }}</h2>
+        <ul>
+            {% for article in category.articles.all %}
+                {% if article.author != request.user.display_name %}
+                <li>
+                    <a href="{{ article.get_absolute_url }}">
+                        {{ article.title }}
+                    </a>
+                </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+        {% endfor %}
+
+
+{% endblock %}
+{% block scripts %}{% endblock %}
