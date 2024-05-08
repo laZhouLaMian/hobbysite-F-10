@@ -3,19 +3,19 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Count, Sum
 from django.forms import modelformset_factory
 
-from commissions.models import Commission, Job, JobApplication
+from commissions.models import Commission, Job
 
 from .forms import CommissionForm, JobApplicationForm, JobForm
 
 
 def commission_list(request):
     ctx = {
-        "commission_list": Commission.objects.all(),
+        "all_commission_list": Commission.objects.all(),
         "created_commission_list": Commission.objects.filter(
-            author__username=request.user.profile.username
+            author=request.user.profile
         ),
         "applied_commission_list": Commission.objects.filter(
-            job__job_application__applicant__username=request.user.profile.username
+            job__job_application__applicant=request.user.profile
         ),
     }
 
@@ -44,9 +44,9 @@ def commission_detail(request, pk):
             application = form.save(commit=False)
             application.job = Job.objects.get(role=request.POST.get("job"))
             application.applicant = request.user.profile
-            application.status = JobApplication.PENDING
+            application.status = "Pending"
             form.save()
-            return redirect("commissions:commission_detail", pk=pk)
+            return redirect("commissions:list")
 
     ctx = {
         "commission_detail": commission_detail,
@@ -74,7 +74,7 @@ def commission_create(request):
             job = job_form.save(commit=False)
             job.commission = commission
             job_form.save()
-            return redirect("commissions:commission_list")
+            return redirect("commissions:list")
 
     ctx = {"commission_form": commission_form, "job_form": job_form}
 
@@ -83,24 +83,37 @@ def commission_create(request):
 
 @login_required
 def commission_edit(request, pk):
-    commission_jobs = Commission.objects.get(pk=pk).job
-    commission_form = CommissionForm()
+    commission = Commission.objects.get(pk=pk)
+    commission_jobs = commission.job
+    commission_form = CommissionForm(instance=commission)
     job_formset = modelformset_factory(Job, extra=0, exclude=["commission"])
-    job_forms = job_formset()
+    job_forms = job_formset(queryset=Job.objects.filter(commission=commission))
 
     if request.method == "POST":
-        commission = Commission.objects.get(pk=pk)
+
         commission_form = CommissionForm(request.POST, instance=commission)
         job_forms = job_formset(request.POST)
+
         if commission_form.is_valid() and job_forms.is_valid():
-            commission_form.save()
+
+            commission = commission_form.save(commit=False)
+
+            is_all_jobs_full = True
+            for form_no in range(commission_jobs.count()):
+                if request.POST[f"form-{form_no}-status"] is not "Full":
+                    is_all_jobs_full = False
+                    break
+
+            if is_all_jobs_full:
+                commission.status = "Full"
+
+            commission.save()
             job_forms.save()
-            return redirect("commissions:commission_detail", pk=pk)
+            return redirect("commissions:detail", pk=pk)
 
     ctx = {
         "commission_jobs": commission_jobs.all(),
         "commission_form": commission_form,
         "job_forms": job_forms,
     }
-
     return render(request, "commission_edit.html", ctx)

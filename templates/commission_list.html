@@ -1,13 +1,34 @@
 {% extends "commission_base.html" %} {% block content %}
+<a href="/commissions/add">Create Commission</a>
+{% if request.user.is_authenticated %}
+<h1>Commissions Created</h1>
+{% for commission in created_commission_list %}
+<li>
+  <a href="{{commission.get_absolute_url}}">{{commission.title}}</a>
+  <p>Submitted: {{ commission.created_on }}</p>
+  <p>Status: {{ commission.get_status_display }}</p>
+</li>
+<br/>
+{% endfor %}
+<h1>Commissions Applied To</h1>
+{% for commission in applied_commission_list %}
+<li>
+  <a href="{{commission.get_absolute_url}}">{{commission.title}}</a>
+  <p>Submitted: {{ commission.created_on }}</p>
+  <p>Status: {{ commission.get_status_display }}</p>
+</li>
+<br/>
+{% endfor %}
+{% endif %}
+<h1>All</h1>
 <ul>
-  {% for commission in commissions %}
+  {% for commission in all_commission_list %}
   <li>
-    <p>
-      <a href="{{commission.get_absolute_url}}">{{commission}}</a> - Submitted:
-      {{ commission.created_on }}
-    </p>
+  <a href="{{commission.get_absolute_url}}">{{commission.title}}</a>
+  <p>Submitted: {{ commission.created_on }}</p>
+  <p>Status: {{ commission.get_status_display }}</p>
   </li>
-
+  <br/>
   {% endfor %}
 </ul>
 {% endblock%}

@@ -23,7 +23,7 @@ class Commission(models.Model):
         DISCONTINUED: "Discontinued",
     }
     author = models.ForeignKey(to=Profile, on_delete=models.CASCADE, related_name="commission", default=1)
-    status = models.CharField(max_length=12, choices=STATUS_CHOICES, default="open")
+    status = models.CharField(max_length=12, choices=STATUS_CHOICES, default=STATUS_CHOICES[OPEN])
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
 
@@ -47,7 +47,7 @@ class Job(models.Model):
         Commission, on_delete=models.CASCADE, related_name="job"
     )
     role = models.CharField(max_length=255)
-    status = models.CharField(max_length=255, default=STATUS_CHOICES[OPEN], choices=STATUS_CHOICES)
+    status = models.CharField(max_length=255, choices=STATUS_CHOICES, default=STATUS_CHOICES[OPEN])
     manpower_required = models.IntegerField()
 
     class Meta:
@@ -70,7 +70,7 @@ class JobApplication(models.Model):
         to=Profile, on_delete=models.CASCADE, related_name="job_application"
     )
     status = models.CharField(
-        max_length=255, default=STATUS_CHOICES[PENDING], choices=STATUS_CHOICES
+        max_length=255, choices=STATUS_CHOICES, default=STATUS_CHOICES[PENDING]
     )
     applied_on = models.DateTimeField(auto_now_add=True)
 
