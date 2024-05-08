@@ -1,16 +1,25 @@
 from django.db import models
 from django.urls import reverse
 
+from user_management.models import Profile
+
+
+OPEN = "0"
+FULL = "1"
+COMPLETED = "2"
+DISCONTINUED = "3"
+
 
 class Commission(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField()
     STATUS_CHOICES = {
-        "open": "Open",
-        "full": "Full",
-        "completed": "Completed",
-        "discontinued": "Discontinued",
+        OPEN: "Open",
+        FULL: "Full",
+        COMPLETED: "Completed",
+        DISCONTINUED: "Discontinued",
     }
+    author = models.ForeignKey(to=Profile, on_delete=models.CASCADE, related_name="commission")
     status = models.CharField(max_length=12, choices=STATUS_CHOICES, default="open")
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
