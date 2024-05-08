@@ -22,7 +22,7 @@ class Commission(models.Model):
         COMPLETED: "Completed",
         DISCONTINUED: "Discontinued",
     }
-    author = models.ForeignKey(to=Profile, on_delete=models.CASCADE, related_name="commission")
+    author = models.ForeignKey(to=Profile, on_delete=models.CASCADE, related_name="commission", default=1)
     status = models.CharField(max_length=12, choices=STATUS_CHOICES, default="open")
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
@@ -55,9 +55,6 @@ class Job(models.Model):
 
     def __str__(self):
         return str(self.role)
-
-    class Meta:
-        ordering = ["-created_on"]
 
 
 class JobApplication(models.Model):
