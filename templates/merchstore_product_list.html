@@ -37,7 +37,9 @@ Merchstore | Product List
 
 {% block main %}
 <h1>Merchstore</h1>
-<hr>
+<a href="{% url "merchstore:merchstore_cart" %}">Your Cart</a>
+<a href="{% url "merchstore:merchstore_transaction_list" %}">Your Transactions</a>
+<hr />
 {% if request.user.is_authenticated %}
 <div>
     <h2>My Products</h2>

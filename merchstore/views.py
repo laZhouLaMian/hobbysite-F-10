@@ -4,6 +4,8 @@ from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin
+
+from user_management.models import Profile
 from .models import Product, ProductType, Transaction
 from .forms import ProductForm, TransactionForm
 
@@ -19,10 +21,27 @@ class ProductDetailView(DetailView):
 
     form = TransactionForm()
 
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx['form'] = self.form
+        return ctx
+
     def post(self, request, *args, **kwargs):
         form = TransactionForm(request.POST)
         if form.is_valid():
             if request.user.is_authenticated:
+                transaction = Transaction()
+                transaction.buyer = request.user.profile
+                transaction.product = self.get_object()
+                transaction.amount = form.cleaned_data.get("amount")
+                product = self.get_object()
+                product.stock = product.stock - transaction.amount
+                product.save()
+                transaction.status = Transaction.TransactionStatus.ON_CART
+                transaction.save()
+                return HttpResponseRedirect("/merchstore/cart")
+            else:
+                return HttpResponseRedirect("/registration/login?next=/merchstore/item/{}".format(self.get_object().pk))
 
 
 class ProductCreateView(LoginRequiredMixin, CreateView):
@@ -67,10 +86,17 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
 
 
 class CartView(ListView):
-    model = Product
+    model = Profile
     template_name = "merchstore_cart.html"
 
 
 class TransactionListView(ListView):
-    model = Transaction
+    model = Profile
     template_name = "merchstore_transaction_list.html"
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        profileTransactions = [[Profile, i.transactions.all()]
+                               for i in Profile.objects.all()]
+        ctx["profileTransactions"] = profileTransactions
+        return ctx

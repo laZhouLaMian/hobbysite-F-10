@@ -14,9 +14,20 @@ Merchstore | Product Details
 <h2> Description:</h2>
 <p>{{ object.description }}</p>
 <h2>${{ object.price }}</h2>
+<h2> Stock:</h2>
+<p>{{ object.stock }}</p>
 
-{% if request.user.is_authenticated %}
+{% if request.user.pk == object.owner.pk %}
 <a href="{% url "merchstore:merchstore_product_update" object.pk %}">Update Product</a>
+{% else %}
+<hr />
+<form method="POST">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Transact"
+    {% if object.stock == 0 %}disabled{% endif %}
+    />
+</form>
 {% endif %}
 
 {% endblock main %}

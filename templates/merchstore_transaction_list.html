@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}
+Merchstore | Cart
+{% endblock title %}
+
+{% block main %}
+<h1>Your Transactions</h1>
+<hr />
+<a href="{% url "merchstore:merchstore_product_list" %}">Back to Products</a>
+<ul>
+
+{% for profile in object_list %}
+    {% if profile.transactions.count != 0 %}
+        <h1>{{ profile.display_name }}</h1>
+        {% for transaction in profile.transactions.all %}
+            {% if transaction.product.owner == user.profile %}
+            <li>
+                <div>
+                    <h3>{{ transaction.product }}</h3>
+                    <ul>
+                        <li>Amount: {{ transaction.amount }}</li>
+                        <li>Status: {{ transaction.status }}</li>
+                        <li>Created on: {{ transaction.createdOn }}</li>
+                    </ul>
+                </div>
+            </li>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+{% endfor %}
+</ul>
+{% endblock main %}

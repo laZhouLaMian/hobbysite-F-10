@@ -27,7 +27,7 @@ class Product(models.Model):
     )
     owner = models.ForeignKey(
         Profile,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
     )
     description = models.TextField()
     stock = models.IntegerField()
@@ -59,7 +59,8 @@ class Transaction(models.Model):
     buyer = models.ForeignKey(
         Profile,
         on_delete=models.SET_NULL,
-        null=True
+        null=True,
+        related_name="transactions"
     )
     product = models.ForeignKey(
         "Product",
@@ -69,11 +70,11 @@ class Transaction(models.Model):
     amount = models.IntegerField()
 
     class TransactionStatus(models.TextChoices):
-        ON_CART = "OC", "On Cart"
-        TO_PAY = "TP", "To Pay"
-        TO_SHIP = "TS", "To Ship"
-        TO_RECEIVE = "TR", "To Receive"
-        DELIVERED = "DE", "Delivered"
+        ON_CART = "On Cart"
+        TO_PAY = "To Pay"
+        TO_SHIP = "To Ship"
+        TO_RECEIVE = "To Receive"
+        DELIVERED = "Delivered"
 
     status = models.CharField(
         choices=TransactionStatus.choices,
