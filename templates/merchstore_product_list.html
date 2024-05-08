@@ -38,6 +38,12 @@ Merchstore | Product List
 {% block main %}
 <h1>Merchstore</h1>
 <hr>
+{% if request.user.is_authenticated %}
+<div>
+    <h2>My Products</h2>
+    <a href="{% url "merchstore:merchstore_product_create" %}">Add a Product</a>
+</div>
+<hr />
 <div id="categorylist">
     {% for productCategory in object_list %}
     <div class="category">
@@ -45,12 +51,40 @@ Merchstore | Product List
         <hr />
         <ul>
             {% for product in productCategory.products.all %}
-            <li>
-                <a href="{{ product.get_absolute_url }}">
-                    {{ product }}
-                </a>
-                <p> ${{ product.price }}</p>
-            </li>
+                {% if product.owner == request.user.profile %}
+                <li>
+                    <a href="{{ product.get_absolute_url }}">
+                        {{ product }}
+                    </a>
+                    <p> ${{ product.price }}</p>
+                </li>
+                {% endif %}
+
+            {% endfor %}
+        </ul>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<h2>All Products</h2>
+<hr />
+<div id="categorylist">
+    {% for productCategory in object_list %}
+    <div class="category">
+        <h1>{{ productCategory }}</h1>
+        <hr />
+        <ul>
+            {% for product in productCategory.products.all %}
+                {% if product.owner != request.user.profile %}
+                <li>
+                    <a href="{{ product.get_absolute_url }}">
+                        {{ product }}
+                    </a>
+                    <p> ${{ product.price }}</p>
+                </li>
+                {% endif %}
+
             {% endfor %}
         </ul>
     </div>

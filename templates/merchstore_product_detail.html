@@ -4,23 +4,9 @@
 Merchstore | Product Details
 {% endblock %}
 
-{% block styles %}
-<style>
-    * {
-        font-family: sans-serif;
-    }
-    header, body {
-        padding: 12px;
-    }
-</style>
-
-{% endblock %}
-
 {% block main %}
-<header>
-    <h1>Merchstore</h1>
-    <hr>
-</header>
+<h1>Product Details</h1>
+<hr />
 <a href="{% url "merchstore:merchstore_product_list" %}">Back to All Products</a>
 <h1>{{ object }}</h1>
 <h2> Product Type:</h2>
@@ -28,5 +14,9 @@ Merchstore | Product Details
 <h2> Description:</h2>
 <p>{{ object.description }}</p>
 <h2>${{ object.price }}</h2>
+
+{% if request.user.is_authenticated %}
+<a href="{% url "merchstore:merchstore_product_update" object.pk %}">Update Product</a>
+{% endif %}
 
 {% endblock main %}
