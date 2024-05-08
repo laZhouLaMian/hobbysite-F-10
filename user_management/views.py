@@ -17,8 +17,7 @@ class ProfileUpdateView(UpdateView):
     def dispatch(self, request, *args, **kwargs):
         if request.user.pk == self.get_object().pk:
             return super().dispatch(request, *args, **kwargs)
-        else:
-            return HttpResponseRedirect("/")
+        return HttpResponseRedirect("/")
 
 
 class ProfileCreateView(CreateView):
@@ -31,8 +30,7 @@ class ProfileCreateView(CreateView):
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
             return super().dispatch(request, *args, **kwargs)
-        else:
-            return HttpResponseRedirect("/")
+        return HttpResponseRedirect("/")
 
     def post(self, request, *args, **kwargs):
         form = ProfileCreationForm(request.POST)
