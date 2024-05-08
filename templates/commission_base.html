@@ -1,21 +1,10 @@
-<html>
-  <head>
-    <title>Hobby site</title>
-  </head>
+{% extends "base.html" %}{% block main %}
+
   <body>
     <h1>Commissions</h1>
-    {% if request.user.is_authenticated %}
-        <h3> Welcome {{ request.user.profile.display_name }} </h3>
-        <form action="{% url 'logout' %}" method="POST">
-            {% csrf_token %}
-            <button type="submit">LOG OUT</button>
-        </form>
-    {% else %}
-        <h3> Hello guest </h3>
-        <a href="{% url 'login' %}"> LOGIN HERE </a>
-    {% endif %}
     <hr/>
 
     {% block content %}{% endblock %}
   </body>
-</html>
+
+  {% endblock main %}

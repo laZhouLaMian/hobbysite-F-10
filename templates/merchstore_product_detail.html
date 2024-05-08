@@ -1,26 +1,32 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Merchstore | Product Details</title>
-        <style>
-            * {
-                font-family: sans-serif;
-            }
-            header, body {
-                padding: 12px;
-            }
-        </style>
-    </head>
-    <body>
-        <header>
-            <h1>Merchstore</h1>
-            <hr>
-        </header>
-        <h1>{{ object }}</h1>
-        <h2> Product Type:</h2>
-        <h3>{{ object.productType }}</h3>
-        <h2> Description:</h2>
-        <p>{{ object.description }}</p>
-        <h2>${{ object.price }}</h2>
-    </body>
-</html>
+{% extends "base.html" %}
+
+{% block title %}
+Merchstore | Product Details
+{% endblock %}
+
+{% block styles %}
+<style>
+    * {
+        font-family: sans-serif;
+    }
+    header, body {
+        padding: 12px;
+    }
+</style>
+
+{% endblock %}
+
+{% block main %}
+<header>
+    <h1>Merchstore</h1>
+    <hr>
+</header>
+<a href="{% url "merchstore:merchstore_product_list" %}">Back to All Products</a>
+<h1>{{ object }}</h1>
+<h2> Product Type:</h2>
+<h3>{{ object.productType }}</h3>
+<h2> Description:</h2>
+<p>{{ object.description }}</p>
+<h2>${{ object.price }}</h2>
+
+{% endblock main %}
