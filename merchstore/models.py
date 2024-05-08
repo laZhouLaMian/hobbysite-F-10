@@ -30,6 +30,7 @@ class Product(models.Model):
         on_delete=models.CASCADE
     )
     description = models.TextField()
+    stock = models.IntegerField()
     price = models.DecimalField(max_digits=5, decimal_places=2)
     stock = models.IntegerField()
 
