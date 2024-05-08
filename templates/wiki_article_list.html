@@ -4,10 +4,10 @@
 {% block page_title %}Wiki{% endblock page_title %}
 
 {% block main %}
-    <h1>HobbySite Wiki</h1>
+    <h2>Hobby Wiki</h2>
     <body>
         {% if request.user.is_authenticated %}
-            <h2>Your articles</h2>
+            <h3>Your articles</h3>
             {% for article in user_articles %}
                 <li>
                     <a href = "{{ article.get_absolute_url }}">
@@ -18,7 +18,7 @@
         {% endif %}
 
         {% for category in categories %}  
-            <h2>{{ category }}</h2>
+            <h3>{{ category }}</h3>
             <p>{{ category.description }}<p>
 
             {% for article in category.articles.all %}
@@ -42,7 +42,7 @@
         {% endfor %}
 
         {% if request.user.is_authenticated %}
-            <h3><a href = "{% url 'wiki:article-add' %}">Add an article!</a></h3>
+            <h4><a href = "{% url 'wiki:article-add' %}">Add an article!</a></h4>
         {% endif %}
     </body>
 {% endblock main %}
