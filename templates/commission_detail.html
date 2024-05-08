@@ -1,14 +1,26 @@
 {% extends "commission_base.html" %} {% block content %}
-<h2>{{ commission.title }}</h2>
-<p>{{ commission.description }}</p>
-<p>People required: {{ commission.people_required }}</p>
-<br />
-<p>Submitted on {{ commission.created_on }}</p>
-<p>Updated on {{ commission.updated_on }}</p>
-<br />
-<h2>Comments</h2>
-{% for comment in commission.comments.all %}
-<p>{{comment.entry}}</p>
-<p>Created: {{ comment.created_on }} Edited: {{ comment.updated_on }}</p>
-<br />
-{% endfor %} {% endblock%}
+  <h1>{{ commission_detail.title }}</h1>
+  <a href="/commissions/{{ commission_detail.id }}/edit" {% if request.user.profile != commission_detail.author %}hidden{% endif %}>Edit</a>
+  <p>Submitted on {{ commission_detail.created_on }}</p>
+  <p>Edited on {{ commission_detail.updated_on }}</p>
+  <br/>
+  <p>Description: {{ commission_detail.description }}</p>
+  <br/>
+  <h2>Jobs</h2>
+  <p>Total manpower: {{ total_manpower_required }}</p>
+  <p>Open manpower: {{ open_manpower }}</p>
+  {% for job in commission_jobs %}
+  <p>Role: {{ job.role }}</p>
+  <p>Status: {{ job.get_status_display }}</p>
+  <form method="POST">
+  	{% csrf_token %}
+  	{{ form }}
+  	<input type="hidden" name="job" value="{{job}}">
+  	<input
+  	  type="submit"
+  	  value="Apply to Job"
+  	  {% if open_manpower == 0 or job.get_status_display != "Open" %}disabled{% endif %}
+  	>
+  </form>
+  {% endfor %}
+{% endblock%}

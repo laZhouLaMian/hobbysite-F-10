@@ -8,5 +8,8 @@ class Profile(models.Model):
     display_name = models.CharField(max_length=63)
     email = models.EmailField()
 
+    def __str__(self):
+        return self.display_name
+    
     def get_absolute_url(self):
         return reverse("user_management:profile_update", args=[self.pk])
