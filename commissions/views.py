@@ -55,3 +55,24 @@ def commission_detail(request, pk):
         "form": form,
     }
     return render(request, "commission_detail.html", ctx)
+
+
+@login_required
+def commission_create(request):
+    commission_form = CommissionForm()
+    job_form = JobForm()
+
+    if request.method == "POST":
+        commission_form = CommissionForm(request.POST)
+        job_form = JobForm(request.POST)
+        if commission_form.is_valid() and job_form.is_valid():
+            commission = commission_form.save(commit=False)
+            commission.author = request.user.profile
+            commission = commission_form.save()
+            job = job_form.save(commit=False)
+            job.commission = commission
+            job_form.save()
+            return redirect("commissions:commission_list")
+
+    ctx = {"commission_form": commission_form, "job_form": job_form}
+    return render(request, "commission_create.html", ctx)
