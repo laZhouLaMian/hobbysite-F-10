@@ -11,5 +11,5 @@ Hobby Site | Create Profile
   {% csrf_token %} {{ form }}
   <input type="submit" value="Create Profile" />
 </form>
-<a href="{% url "homepage:homepage" %}">Go to homepage</a>
+<a href="{% url 'homepage:homepage' %}">Go to homepage</a>
 {% endblock main %}

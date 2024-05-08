@@ -1,15 +1,54 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Wiki</title>
-        <h1>Wiki</h1>
-    </head>
-    <body>
-        <h2>{{ object }}</h2>
-        <h4><i>Category: {{ object.category }}</i></h4>
-        <p>{{ object.entry }}<p>
-        <small>Created on: {{ object.created_on }}</small>
-        <br>
-        <small>Last updated: {{ object.updated_on }}</small>
-    </body>
-</html>
+{% extends 'base.html' %}
+{% load static %}
+    
+{% block page_title %}Wiki{% endblock page_title %}
+
+{% block main %}
+    <h2>{{ article }}</h2>
+
+    {% if article.header %}
+        <img src="{{ article.header.url }}"width="300px">
+    {% endif %}
+
+    <h4><i>Category: {{ article.category }}</i></h4>
+    <p>{{ article.entry }}<p>
+
+    <small>Created on: {{ article.created_on }}</small><br>
+    <small>Last updated: {{ article.updated_on }}</small><br>
+    <small>Written by: {{ article.author.display_name }}</small>
+
+    <h3><a href = "{{ '../articles' }}">Back to article list</a></h3>
+
+    {% if request.user.is_authenticated %}
+        {% if request.user == article.author.user %}
+            <h3><a href = "{% url 'wiki:article-update' pk=article.pk %}">Edit this article</a></h3>
+        {% endif %}
+
+        <h3>Add a comment:</h3>
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_div }}
+            <button type="submit">Submit</button>
+        </form>
+    {% endif %}
+
+    <h3>Comments</h3>
+    {% for comment in article.comments.all %}
+        <div>
+            <b><small>{{ comment.author.display_name }} ({{ comment.created_on }}): </small></b> {{ comment.entry }}
+        </div>
+    {% endfor %}
+
+    <div>
+        <h3>Read more articles under "{{ article.category }}":</h3>
+        {% for arti in article.category.articles.all %}
+            {% if arti.title != article.title %}
+                <li>
+                    <a href = "{{ arti.get_absolute_url }}">
+                        {{ arti }}
+                    </a>
+            {% endif %}
+        {% endfor %}
+    </div>
+
+{% endblock main %}
