@@ -9,17 +9,25 @@ from .forms import CommissionForm, JobApplicationForm, JobForm
 
 
 def commission_list(request):
-    ctx = {
-        "all_commission_list": Commission.objects.all(),
-        "created_commission_list": Commission.objects.filter(
-            author=request.user.profile
-        ),
-        "applied_commission_list": Commission.objects.filter(
-            job__job_application__applicant=request.user.profile
-        ),
-    }
+    if request.user.is_authenticated:
+        ctx = {
+            "all_commission_list": Commission.objects.all(),
+            "created_commission_list": Commission.objects.filter(
+                author=request.user.profile
+            ),
+            "applied_commission_list": Commission.objects.filter(
+                job__job_application__applicant=request.user.profile
+            ),
+        }
 
-    return render(request, "commission_list.html", ctx)
+        return render(request, "commission_list.html", ctx)
+
+    if request.user.is_anonymous:
+        ctx = {
+            "all_commission_list": Commission.objects.all(),
+        }
+
+        return render(request, "commission_list.html", ctx)
 
 
 @login_required

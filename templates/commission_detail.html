@@ -1,19 +1,17 @@
 {% extends "commission_base.html" %} {% block content %}
   <h1>{{ commission_detail.title }}</h1>
   <a href="/commissions/{{ commission_detail.id }}/edit" {% if request.user.profile != commission_detail.author %}hidden{% endif %}>Edit</a>
-  <p>People required: {{ commission_detail.people_required }}</p>
   <p>Submitted on {{ commission_detail.created_on }}</p>
   <p>Edited on {{ commission_detail.updated_on }}</p>
   <br/>
-  <p>{{ commission_detail.description }}</p>
+  <p>Description: {{ commission_detail.description }}</p>
   <br/>
   <h2>Jobs</h2>
   <p>Total manpower: {{ total_manpower_required }}</p>
   <p>Open manpower: {{ open_manpower }}</p>
   {% for job in commission_jobs %}
-  <p>{{ job.role }}</p>
-  <p>{{ job.get_status_display }}</p>
-  <p>{{ job.manpower_required }} people required</p>
+  <p>Role: {{ job.role }}</p>
+  <p>Status: {{ job.get_status_display }}</p>
   <form method="POST">
   	{% csrf_token %}
   	{{ form }}
@@ -24,6 +22,5 @@
   	  {% if open_manpower == 0 or job.get_status_display != "Open" %}disabled{% endif %}
   	>
   </form>
-
   {% endfor %}
 {% endblock%}

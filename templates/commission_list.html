@@ -1,6 +1,18 @@
 {% extends "commission_base.html" %} {% block content %}
-<a href="/commissions/add">Create Commission</a>
+<h1>All Commissions</h1>
+<ul>
+  {% for commission in all_commission_list %}
+  <li>
+  <a href="{{commission.get_absolute_url}}">{{commission.title}}</a>
+  <p>Submitted: {{ commission.created_on }}</p>
+  <p>Status: {{ commission.get_status_display }}</p>
+  </li>
+  <br/>
+
+  {% endfor %}
+</ul>
 {% if request.user.is_authenticated %}
+<a href="/commissions/add">Create Commission</a>
 <h1>Commissions Created</h1>
 {% for commission in created_commission_list %}
 <li>
@@ -20,15 +32,4 @@
 <br/>
 {% endfor %}
 {% endif %}
-<h1>All</h1>
-<ul>
-  {% for commission in all_commission_list %}
-  <li>
-  <a href="{{commission.get_absolute_url}}">{{commission.title}}</a>
-  <p>Submitted: {{ commission.created_on }}</p>
-  <p>Status: {{ commission.get_status_display }}</p>
-  </li>
-  <br/>
-  {% endfor %}
-</ul>
 {% endblock%}
