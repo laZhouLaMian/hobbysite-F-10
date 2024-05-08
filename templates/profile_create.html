@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}
+Hobby Site | Create Profile
+{% endblock title %}
+
+{% block main %}
+<h1>Profile Information</h1>
+<hr />
+<form method="POST">
+  {% csrf_token %} {{ form }}
+  <input type="submit" value="Create Profile" />
+</form>
+<a href="{% url 'homepage:homepage' %}">Go to homepage</a>
+{% endblock main %}

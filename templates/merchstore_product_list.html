@@ -1,64 +1,94 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Merchstore | Product List</title>
-        <style>
-            header, body {
-                padding: 12px;
-            }
-            * {
-                font-family: sans-serif;
-            }
-            div {
-                display: flex;
-            }
-            .category {
-                flex-direction: column;
-                padding: 20px;
-                border-radius: 20px;
-                border: 2px solid #aaaaaa;
-                margin: 20px;
-            }
-            ul {
-                padding: 0;
-                list-style-type: none;
-            }
-            li {
-                display: flex;
-                flex-direction: row;
-                width: 200px;
-            }
-            li > p {
-                margin-left: auto;
-                margin-top: 0;
-            }
-            hr {
-                width: 100%;    
-            }
-        </style>
-    </head>
-    <body>
-        <header>
-            <h1>Merchstore</h1>
-            <hr>
-        </header>
-        <div id="categorylist">
-            {% for productCategory in object_list %}
-            <div class="category">
-                <h1>{{ productCategory }}</h1>
-                <hr />
-                <ul>
-                    {% for product in productCategory.products.all %}
-                    <li>
-                        <a href="{{ product.get_absolute_url }}">
-                            {{ product }}
-                        </a>
-                        <p> ${{ product.price }}</p>
-                    </li>
-                    {% endfor %}
-                </ul>
-            </div>
+{% extends "base.html" %}
+
+{% block title %}
+Merchstore | Product List
+{% endblock title %}
+
+{% block styles %}
+<style>
+    #categorylist {
+        display: flex;
+    }
+    .category {
+        flex-direction: column;
+        padding: 20px;
+        border-radius: 20px;
+        border: 2px solid #aaaaaa;
+        margin: 20px;
+    }
+    ul {
+        padding: 0;
+        list-style-type: none;
+    }
+    li {
+        display: flex;
+        flex-direction: row;
+        width: 200px;
+    }
+    li > p {
+        margin-left: auto;
+        margin-top: 0;
+    }
+    hr {
+        width: 100%;
+    }
+</style>
+{% endblock styles %}
+
+{% block main %}
+<h1>Merchstore</h1>
+<a href="{% url "merchstore:merchstore_cart" %}">Your Cart</a>
+<a href="{% url "merchstore:merchstore_transaction_list" %}">Your Transactions</a>
+<hr />
+{% if request.user.is_authenticated %}
+<div>
+    <h2>My Products</h2>
+    <a href="{% url "merchstore:merchstore_product_create" %}">Add a Product</a>
+</div>
+<hr />
+<div id="categorylist">
+    {% for productCategory in object_list %}
+    <div class="category">
+        <h1>{{ productCategory }}</h1>
+        <hr />
+        <ul>
+            {% for product in productCategory.products.all %}
+                {% if product.owner == request.user.profile %}
+                <li>
+                    <a href="{{ product.get_absolute_url }}">
+                        {{ product }}
+                    </a>
+                    <p> ${{ product.price }}</p>
+                </li>
+                {% endif %}
             {% endfor %}
-        </div>
-    </body>
-</html>
+        </ul>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<h2>All Products</h2>
+<hr />
+<div id="categorylist">
+    {% for productCategory in object_list %}
+    <div class="category">
+        <h1>{{ productCategory }}</h1>
+        <hr />
+        <ul>
+            {% for product in productCategory.products.all %}
+                {% if product.owner != request.user.profile %}
+                <li>
+                    <a href="{{ product.get_absolute_url }}">
+                        {{ product }}
+                    </a>
+                    <p> ${{ product.price }}</p>
+                </li>
+                {% endif %}
+
+            {% endfor %}
+        </ul>
+    </div>
+    {% endfor %}
+</div>
+{% endblock main %}

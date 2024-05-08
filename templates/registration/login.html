@@ -1,14 +1,18 @@
-{% extends 'base.html' %}
-{% block page_title %}Recipe Book{% endblock %}
-{% block styles %}{% endblock %}
-{% block main %}
+<!DOCTYPE html>
+<html>
+  <head> </head>
+  <body>
     <h1>Login</h1>
-    <a href="{% url 'password_reset' %}">Forgot password</a>
-
+    <hr />
+    <a href="{% url 'password_reset' %}">Reset password</a>
     <form method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">login</button>
+      {% csrf_token %} {{ form.as_p }}
+      <button type="submit">LOG IN</button>
     </form>
-{% endblock %}
-{% block scripts %}{% endblock %}
+    <br>
+    <a href="{% url 'user_management:profile_create' %}">Create an account</a>
+    <br>
+    <a href="{% url 'homepage:homepage' %}">Go to homepage</a>
+  </body>
+</html>
+

@@ -1,0 +1,11 @@
+{% extends "commission_base.html" %} {% block content %}
+<h2>Edit Commission</h2>
+<form method="POST">
+	{% csrf_token %}
+	{{ commission_form }}
+	<h3>Edit Jobs</h3>
+	<h4></h4>
+	{{ job_forms}}
+	<input type="submit" value="Submit">
+</form>
+{% endblock %}

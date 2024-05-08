@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}
+Hobby Site | Update Profile
+{% endblock title %}
+
+{% block main %}
+<h1>Profile Information</h1>
+<hr />
+<p>Username: {{ request.user.username }}</p>
+<form method="POST">
+  {% csrf_token %} {{ form.as_p }}
+  <input type="submit" value="Update" />
+</form>
+<a href="{% url 'homepage:homepage' %}">Go to homepage</a>
+{% endblock main %}

@@ -1,20 +1,48 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Wiki</title>
-        <h1>Wiki</h1>
-    </head>
+{% extends 'base.html' %}
+{% load static %}
+    
+{% block page_title %}Wiki{% endblock page_title %}
+
+{% block main %}
+    <h2>Hobby Wiki</h2>
     <body>
-        {% for list in object_list %}  
-            <h2>{{ list }}</h2>
-            <p>{{ list.description }}<p>
-            {% for article in list.articles.all %}
+        {% if request.user.is_authenticated %}
+            <h3>Your articles</h3>
+            {% for article in user_articles %}
                 <li>
                     <a href = "{{ article.get_absolute_url }}">
                         {{ article }}
                     </a>
                 </li>
             {% endfor %}
+        {% endif %}
+
+        {% for category in categories %}  
+            <h3>{{ category }}</h3>
+            <p>{{ category.description }}<p>
+
+            {% for article in category.articles.all %}
+                {% if request.user.is_authenticated %}
+                    {% if request.user != article.author.user %}
+                        <li>
+                            <a href = "{{ article.get_absolute_url }}">
+                                {{ article }}
+                            </a>
+                        </li>
+                    {% endif %}
+                {% else %}
+                    <li>
+                        <a href = "{{ article.get_absolute_url }}">
+                            {{ article }}
+                        </a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+            
         {% endfor %}
+
+        {% if request.user.is_authenticated %}
+            <h4><a href = "{% url 'wiki:article-add' %}">Add an article!</a></h4>
+        {% endif %}
     </body>
-</html>
+{% endblock main %}

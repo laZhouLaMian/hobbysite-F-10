@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}
+Merchstore | Create Product
+{% endblock title %}
+
+{% block main %}
+<h1>Create Product</h1>
+<hr />
+<a href="{% url "merchstore:merchstore_product_list" %}">Back to Products</a>
+<form method="POST">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Create Product" />
+</form>
+{% endblock main %}
